@@ -1,0 +1,81 @@
+{% extends 'books/base.html' %}
+
+{% block title %}All Books - Library Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-books"></i> Library Books</h1>
+            <a href="{% url 'book_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add New Book
+            </a>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="GET" class="row g-3">
+                    <div class="col-md-10">
+                        <input type="text" name="q" class="form-control" placeholder="Search books by title, author, or ISBN..." value="{{ query }}">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Books Grid -->
+        {% if books %}
+            <div class="row">
+                {% for book in books %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ book.title }}</h5>
+                                <p class="card-text">
+                                    <strong>Author:</strong> {{ book.author }}<br>
+                                    <strong>Genre:</strong> {{ book.get_genre_display }}<br>
+                                    <strong>Pages:</strong> {{ book.pages }}<br>
+                                    <strong>Status:</strong> 
+                                    {% if book.available %}
+                                        <span class="badge bg-success">Available</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Not Available</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="btn-group w-100" role="group">
+                                    <a href="{% url 'book_detail' book.pk %}" class="btn btn-info btn-sm">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+                                    <a href="{% url 'book_update' book.pk %}" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a href="{% url 'book_delete' book.pk %}" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center">
+                <i class="fas fa-info-circle"></i> 
+                {% if query %}
+                    No books found matching "{{ query }}".
+                {% else %}
+                    No books available in the library.
+                {% endif %}
+                <a href="{% url 'book_create' %}" class="btn btn-primary ms-2">Add First Book</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

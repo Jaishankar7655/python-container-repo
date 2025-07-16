@@ -1,0 +1,87 @@
+{% extends 'books/base.html' %}
+
+{% block title %}{{ action }} Book - Library Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-{% if action == 'Create' %}plus{% else %}edit{% endif %}"></i> {{ action }} Book</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                                {{ form.title }}
+                                {% if form.title.errors %}
+                                    <div class="text-danger">{{ form.title.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.author.id_for_label }}" class="form-label">Author</label>
+                                {{ form.author }}
+                                {% if form.author.errors %}
+                                    <div class="text-danger">{{ form.author.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.isbn.id_for_label }}" class="form-label">ISBN</label>
+                                {{ form.isbn }}
+                                {% if form.isbn.errors %}
+                                    <div class="text-danger">{{ form.isbn.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.genre.id_for_label }}" class="form-label">Genre</label>
+                                {{ form.genre }}
+                                {% if form.genre.errors %}
+                                    <div class="text-danger">{{ form.genre.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.publication_date.id_for_label }}" class="form-label">Publication Date</label>
+                                {{ form.publication_date }}
+                                {% if form.publication_date.errors %}
+                                    <div class="text-danger">{{ form.publication_date.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.pages.id_for_label }}" class="form-label">Pages</label>
+                                {{ form.pages }}
+                                {% if form.pages.errors %}
+                                    <div class="text-danger">{{ form.pages.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    {{ form.available }}
+                                    <label class="form-check-label" for="{{ form.available.id_for_label }}">
+                                        Available
+                                    </label>
+                                </div>
+                                {% if form.available.errors %}
+                                    <div class="text-danger">{{ form.available.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="fas fa-save"></i> {{ action }} Book
+                        </button>
+                        <a href="{% url 'book_list' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
