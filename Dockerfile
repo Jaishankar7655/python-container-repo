@@ -29,4 +29,4 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 8000
 
 # Run migrations and start Gunicorn
-CMD ["sh", "-c", "python manage.py migrate --no-input && gunicorn --bind 0.0.0.0:8000 --workers 3 project.wsgi:application"]
+CMD ["sh", "-c", "python3 manage.py migrate --no-input && gunicorn --bind 0.0.0.0:8000 --workers 3 myproject.wsgi:application"]
