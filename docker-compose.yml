@@ -8,7 +8,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: book
-      # Removed conflicting MYSQL_USER and MYSQL_PASSWORD for root
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
