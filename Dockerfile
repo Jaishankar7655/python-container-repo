@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     gcc \
     default-libmysqlclient-dev \
     pkg-config \
+    netcat-traditional \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -22,11 +23,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project files
 COPY . .
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
-
 # Expose port
 EXPOSE 8000
-
-# Run migrations and start Gunicorn
-CMD ["sh", "-c", "python3 manage.py migrate --no-input && gunicorn --bind 0.0.0.0:8000 --workers 3 myproject.wsgi:application"]
