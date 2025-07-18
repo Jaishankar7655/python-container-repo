@@ -23,5 +23,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project files
 COPY . .
 
+# Create directories for static and media files
+RUN mkdir -p /app/static /app/media
+
 # Expose port
 EXPOSE 8000
+
+# Command with migrations and static files collection
+CMD ["sh", "-c", "echo 'Waiting for MySQL...' && while ! nc -z mysql-db 3306; do sleep 1; done && echo 'MySQL is ready!' && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn project.wsgi:application --bind 0.0.0.0:8000 --workers 3"]

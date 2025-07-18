@@ -30,14 +30,8 @@ services:
       dockerfile: Dockerfile
     container_name: django-app
     restart: unless-stopped
-    environment:
-      DEBUG: "False"
-      DB_NAME: book
-      DB_USER: root
-      DB_PASSWORD: root
-      DB_HOST: mysql-db
-      DB_PORT: 3306
-      DJANGO_SETTINGS_MODULE: myproject.settings
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     depends_on:
@@ -48,6 +42,7 @@ services:
     volumes:
       - static_volume:/app/static
       - media_volume:/app/media
+      - .:/app
 
   nginx:
     image: nginx:alpine
