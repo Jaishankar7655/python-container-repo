@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   nginx:
-    build: 
+    build:
       context: ./nginx
     container_name: nginx
     ports:
@@ -14,7 +14,7 @@ services:
       - app-network
 
   django:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     container_name: django
@@ -24,7 +24,7 @@ services:
       - .:/app
     command: >
       sh -c "python manage.py migrate &&
-             gunicorn meetingoncloude.wsgi:application --bind 0.0.0.0:8000"
+             gunicorn project.wsgi:application --bind 0.0.0.0:8000"
     env_file:
       - .env
     restart: always
