@@ -24,7 +24,7 @@
                 <form method="post" class="d-inline">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger me-2">
-                        <i class="fas fa-trash"></i> Yes, Delete
+                        <i class="fas fa-trash"></i> Yes, Delete book 
                     </button>
                     <a href="{% url 'book_detail' book.pk %}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> Cancel
