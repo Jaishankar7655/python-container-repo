@@ -13,7 +13,6 @@ RUN apt-get update && apt-get install -y \
     default-libmysqlclient-dev \
     pkg-config \
     netcat-traditional \
-    curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -27,15 +26,10 @@ COPY . .
 # Create directories for static and media files
 RUN mkdir -p /app/static /app/media
 
-# Set proper permissions
-RUN chmod +x /app
-
 # Expose port
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8000/ || exit 1
+# Start the Django server with MySQL wait and static handling
+CMD ["sh", "-c", "echo 'Waiting for MySQL...' && while ! nc -z mysql 3306; do sleep 1; done && echo 'MySQL is ready!' && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn project.wsgi:application --bind 0.0.0.0:8000 --workers 3"]
 
-# Start the Django server with better error handling
-CMD ["sh", "-c", "echo 'Waiting for MySQL...' && while ! nc -z mysql 3306; do sleep 2; done && echo 'MySQL is ready!' && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn project.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 120 --keep-alive 2 --max-requests 1000 --max-requests-jitter 100"]
+#   this changes make a new commit to check the piplens 
