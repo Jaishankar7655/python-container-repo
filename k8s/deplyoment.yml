@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: library-app-deployment
+  namespace: library-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: library-app
+  template:
+    metadata:
+      labels:
+        app: library-app
+    spec:
+      containers:
+        - name: library-app-container
+          image: nginx:latest   # यहाँ अपनी app की image डाल सकते हो
+          ports:
+            - containerPort: 80
+          resources:             # HPA सही से काम करे इसके लिए resources
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "500m"
