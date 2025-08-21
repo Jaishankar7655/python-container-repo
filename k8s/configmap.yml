@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-config
+  namespace: django-app
+data:
+  DEBUG: "False"
+  DB_NAME: "book"
+  DB_USER: "appuser"
+  DB_HOST: "mysql"
+  DB_PORT: "3306"
+  ALLOWED_HOSTS: "65.2.38.105"

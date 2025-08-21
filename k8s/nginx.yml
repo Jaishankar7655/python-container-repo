@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: django-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: jaishankar7655/nginx:latest   # apna nginx image jisme default.conf copy hai
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: static
+          mountPath: /static
+        - name: media
+          mountPath: /media
+      volumes:
+      - name: static
+        emptyDir: {}
+      - name: media
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: django-app
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+  ports:
+  - port: 80
+    targetPort: 80
